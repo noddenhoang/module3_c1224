@@ -316,20 +316,43 @@ SELECT ho_ten_hs,gioi_tinh,ho_ten_ph FROM test_quan_ly_truong_hoc.hoc_sinh;
 
 SELECT * FROM lop;
 -- Luyện tập về WHERE
+-- Những học sinh có giới tính là Nam.
 SELECT * FROM hoc_sinh WHERE gioi_tinh = 'Nam';
-
+-- Những học sinh chưa có tên của phụ huynh.
 SELECT * FROM hoc_sinh WHERE ho_ten_ph IS NULL;
-
+-- Những lớp chưa có giáo viên chủ nhiệm.
 SELECT * FROM lop WHERE ma_gvcn IS NULL;
-
+-- Những học sinh chưa được phân lớp.
 SELECT * FROM hoc_sinh WHERE ma_lop IS NULL;
-
+-- Những học sinh nữ có địa chỉ ở Thanh Khê.
 SELECT * FROM hoc_sinh WHERE gioi_tinh = 'Nữ' AND dia_chi = 'Thanh Khê';
-
-SELECT * FROM hoc_sinh WHERE (gioi_tinh = 'Nam' AND dia_chi LIKE 'Hải Châu') OR (dia_chi LIKE 'Thanh Khê' AND gioi_tinh = 'Nữ');
-
+-- Những học sinh nam có địa chỉ ở Hải Châu hoặc những học sinh nữ có địa chỉ ở Thanh Khê.
+SELECT * FROM hoc_sinh WHERE (gioi_tinh = 'Nam' AND dia_chi = 'Hải Châu') OR (dia_chi = 'Thanh Khê' AND gioi_tinh = 'Nữ');
+-- Những học sinh nam chưa có tên phụ huynh và những học sinh nữ chưa được phân lớp.
 SELECT * FROM hoc_sinh WHERE (gioi_tinh = 'Nam' AND ho_ten_ph IS NULL) OR (gioi_tinh = 'Nữ' AND ma_lop IS NULL);
-
+-- Những học sinh nam chưa được phân lớp và những học sinh nam chưa có tên phụ huynh.
 SELECT * FROM hoc_sinh WHERE gioi_tinh = 'Nam' AND (ma_lop IS NULL OR ho_ten_ph IS NULL);
-
+-- Mã môn học của những môn học được dạy trong học kỳ 2.
 SELECT DISTINCT ma_mh FROM phu_trach_bo_mon WHERE hoc_ky = 'Học kỳ 2';
+
+-- Luyện tập về LIKE
+-- Những học sinh có họ tên bắt đầu bằng từ Nguyễn.
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE 'Nguyễn%';
+-- Những học sinh có họ tên kết thúc bằng từ Nở.
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE '%Nở';
+-- Những học sinh có họ tên chứa từ Thị.
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE '%Thị%';
+-- Những học sinh chứa từ Thị ở giữa (không được chứa ở đầu và ở cuối).
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE '%Thị%' AND ho_ten_hs NOT LIKE 'Thị%' AND ho_ten_hs NOT LIKE '%Thị';
+-- Những học sinh có họ tên với độ dài là 30 ký tự (kể cả khoảng trắng).
+SELECT * FROM hoc_sinh WHERE LENGTH(ho_ten_hs) = 30;
+-- Những học sinh có họ tên với độ dài tối đa 30 ký tự.
+SELECT * FROM hoc_sinh WHERE LENGTH(ho_ten_hs) <= 30;
+-- Những học sinh có họ tên với độ dài tối đa 30 ký tự và bắt đầu với N.
+SELECT * FROM hoc_sinh WHERE LENGTH(ho_ten_hs) <= 30 AND ho_ten_hs LIKE 'N%';
+-- Những học sinh có họ tên bắt đầu với N, T, V.
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE 'N%' OR ho_ten_hs LIKE 'T%' OR ho_ten_hs LIKE 'V%';
+-- Những học sinh có họ tên không bắt đầu với N, T, V.
+SELECT * FROM hoc_sinh WHERE ho_ten_hs NOT LIKE 'N%' AND ho_ten_hs NOT LIKE 'T%' AND ho_ten_hs NOT LIKE 'V%';
+-- Những học sinh có họ tên có phần họ đúng 4 ký tự.
+SELECT * FROM hoc_sinh WHERE LENGTH(SUBSTRING_INDEX(ho_ten_hs, ' ', 1)) = 4;
