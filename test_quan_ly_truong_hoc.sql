@@ -306,3 +306,10 @@ VALUES
     ('GV008', 'L0008', 'MH008', 'Học kỳ 2'),
     ('GV009', 'L0009', 'MH009', 'Học kỳ 2'),
     ('GV010', 'L0010', 'MH010', 'Học kỳ 2');
+    
+    
+SELECT * FROM giao_vien;
+
+SELECT ho_ten_hs,gioi_tinh,ho_ten_ph FROM test_quan_ly_truong_hoc.hoc_sinh;
+
+SELECT * FROM lop;
