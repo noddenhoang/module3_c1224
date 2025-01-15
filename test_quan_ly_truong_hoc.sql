@@ -337,9 +337,9 @@ SELECT DISTINCT ma_mh FROM phu_trach_bo_mon WHERE hoc_ky = 'Học kỳ 2';
 
 -- Luyện tập về LIKE
 -- Những học sinh có họ tên bắt đầu bằng từ Nguyễn.
-SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE 'Nguyễn%';
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE 'Nguyễn %';
 -- Những học sinh có họ tên kết thúc bằng từ Nở.
-SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE '%Nở';
+SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE '% Nở';
 -- Những học sinh có họ tên chứa từ Thị.
 SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE '%Thị%';
 -- Những học sinh chứa từ Thị ở giữa (không được chứa ở đầu và ở cuối).
