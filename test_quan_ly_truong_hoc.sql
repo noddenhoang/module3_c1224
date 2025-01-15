@@ -63,6 +63,8 @@ CREATE TABLE phu_trach_bo_mon (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+-- INSERT dữ liệu vào tất cả các bản
+
 INSERT INTO giao_vien (ma_gv, ho_ten_gv)
 VALUES ('GV001', 'Nguyễn Văn Anh'),
        ('GV002', 'Trần Quốc Bảo'),
@@ -307,9 +309,27 @@ VALUES
     ('GV009', 'L0009', 'MH009', 'Học kỳ 2'),
     ('GV010', 'L0010', 'MH010', 'Học kỳ 2');
     
-    
+-- Liệt kê thông tin giáo viên, học sinh và lớp học trong trường
 SELECT * FROM giao_vien;
 
 SELECT ho_ten_hs,gioi_tinh,ho_ten_ph FROM test_quan_ly_truong_hoc.hoc_sinh;
 
 SELECT * FROM lop;
+-- Luyện tập về WHERE
+SELECT * FROM hoc_sinh WHERE gioi_tinh = 'Nam';
+
+SELECT * FROM hoc_sinh WHERE ho_ten_ph IS NULL;
+
+SELECT * FROM lop WHERE ma_gvcn IS NULL;
+
+SELECT * FROM hoc_sinh WHERE ma_lop IS NULL;
+
+SELECT * FROM hoc_sinh WHERE gioi_tinh = 'Nữ' AND dia_chi = 'Thanh Khê';
+
+SELECT * FROM hoc_sinh WHERE (gioi_tinh = 'Nam' AND dia_chi LIKE 'Hải Châu') OR (dia_chi LIKE 'Thanh Khê' AND gioi_tinh = 'Nữ');
+
+SELECT * FROM hoc_sinh WHERE (gioi_tinh = 'Nam' AND ho_ten_ph IS NULL) OR (gioi_tinh = 'Nữ' AND ma_lop IS NULL);
+
+SELECT * FROM hoc_sinh WHERE gioi_tinh = 'Nam' AND (ma_lop IS NULL OR ho_ten_ph IS NULL);
+
+SELECT DISTINCT ma_mh FROM phu_trach_bo_mon WHERE hoc_ky = 'Học kỳ 2';
