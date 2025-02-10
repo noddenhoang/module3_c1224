@@ -356,3 +356,61 @@ SELECT * FROM hoc_sinh WHERE ho_ten_hs LIKE 'N%' OR ho_ten_hs LIKE 'T%' OR ho_te
 SELECT * FROM hoc_sinh WHERE ho_ten_hs NOT LIKE 'N%' AND ho_ten_hs NOT LIKE 'T%' AND ho_ten_hs NOT LIKE 'V%';
 -- Những học sinh có họ tên có phần họ đúng 4 ký tự.
 SELECT * FROM hoc_sinh WHERE LENGTH(SUBSTRING_INDEX(ho_ten_hs, ' ', 1)) = 4;
+
+-- Luyện tập về ORDER BY
+-- Thông tin của toàn bộ học sinh trong trường. Kết quả trả về cần được sắp xếp tăng dần theo họ tên học sinh.
+SELECT * FROM hoc_sinh ORDER BY ho_ten_hs ASC;
+
+-- Thông tin của toàn bộ học sinh trong trường. Kết quả trả về cần được sắp xếp giảm dần theo địa chỉ.
+SELECT * FROM hoc_sinh ORDER BY dia_chi DESC;
+
+-- Thông tin của toàn bộ học sinh trong trường. Kết quả trả về cần được sắp xếp tăng dần theo họ tên học sinh và giảm dần theo địa chỉ.
+SELECT * FROM hoc_sinh ORDER BY ho_ten_hs ASC, dia_chi DESC;
+
+-- Thông tin của toàn bộ học sinh trong trường. Kết quả trả về cần được sắp xếp tăng dần theo họ tên học sinh và tăng dần theo địa chỉ.
+SELECT * FROM hoc_sinh ORDER BY ho_ten_hs ASC, dia_chi ASC;
+
+-- Thông tin của toàn bộ học sinh trong trường. Kết quả trả về cần được sắp xếp giảm dần theo họ tên học sinh, giảm dần theo địa chỉ.
+SELECT * FROM hoc_sinh ORDER BY ho_ten_hs DESC, dia_chi DESC;
+
+-- Thông tin của toàn bộ học sinh trong trường. Kết quả trả về cần được sắp xếp giảm dần theo họ tên học sinh, giảm dần theo địa chỉ và tăng dần theo họ tên phụ huynh.
+SELECT * FROM hoc_sinh ORDER BY ho_ten_hs DESC, dia_chi DESC, ho_ten_ph ASC;
+
+-- ASC là từ khoá không bắt buộc vì nó là giá trị mặc định.
+
+-- Luyện tập về DISTINCT
+
+-- Họ tên của toàn bộ học sinh trong trường, nếu họ tên nào trùng nhau thì chỉ hiển thị 1 lần.
+SELECT DISTINCT ho_ten_hs FROM hoc_sinh;
+
+-- Mã lớp của các lớp đã có học sinh học ở lớp đó. Nếu mã lớp nào trùng nhau thì chỉ hiển thị 1 lần.
+SELECT DISTINCT ma_lop  FROM hoc_sinh;
+
+-- Mã môn học của những môn học đã có ít nhất 1 giáo viên được phân công phụ trách rồi. (*)
+SELECT DISTINCT ma_mh  FROM phu_trach_bo_mon WHERE ma_gvpt IS NOT NULL;
+
+-- Mã môn học của những môn học đã từng được tổ chức thi ít nhất 1 lần.
+SELECT DISTINCT ma_mh  FROM ket_qua_hoc_tap WHERE diem_thi_giua_ky IS NOT NULL OR diem_thi_cuoi_ky IS NOT NULL OR ngay_gio_thi_cuoi_ky IS NOT NULL;
+
+-- Mã giáo viên của những giáo viên đã từng làm chủ nhiệm cho ít nhất 1 lớp nào đó.
+SELECT DISTINCT ma_gvcn FROM lop;
+
+-- Luyện tập về JOIN 2 bảng
+
+-- Liệt kê ma_học_sinh, ho_ten_hoc_sinh, gioi_tinh, ma_lop, ten_lop, ma_gvcn của tất cả học sinh trong trường.
+SELECT hoc_sinh.ma_hs, hoc_sinh.ho_ten_hs, hoc_sinh.gioi_tinh, hoc_sinh.ma_lop, lop.ten_lop, lop.ma_gvcn  FROM hoc_sinh INNER JOIN lop ON hoc_sinh.ma_lop = lop.ma_lop;
+
+-- Liệt kê ma_hoc_sinh, ho_ten_hoc_sinh, hoc_ky, ma_mon_hoc, diem_thi_giua_ky, diem_thi_cuoi_ky của tất cả học sinh và các môn học có kết quả tương ứng với từng học sinh trong trường.
+SELECT hoc_sinh.ma_hs, hoc_sinh.ho_ten_hs, ket_qua_hoc_tap.hoc_ky, ket_qua_hoc_tap.ma_mh, ket_qua_hoc_tap.diem_thi_giua_ky, ket_qua_hoc_tap.diem_thi_cuoi_ky  FROM hoc_sinh INNER JOIN ket_qua_hoc_tap ON hoc_sinh.ma_hs = ket_qua_hoc_tap.ma_hs;
+
+-- Liệt kê ma_giao_vien, ho_ten_giao_vien, ma_lop, ma_mon_hoc, hoc_ky của những giáo viên đã được giao phụ trách ít nhất một môn học.
+SELECT giao_vien.ma_gv, giao_vien.ho_ten_gv, phu_trach_bo_mon.ma_lop, phu_trach_bo_mon.ma_mh, phu_trach_bo_mon.hoc_ky FROM giao_vien INNER JOIN phu_trach_bo_mon ON giao_vien.ma_gv = phu_trach_bo_mon.ma_gvpt WHERE phu_trach_bo_mon.ma_lop IS NOT NULL;
+
+-- Suy nghĩ về yêu cầu a ở trên: Nếu học sinh chưa được phân lớp thì liệu có liệt kê được học sinh đó không?
+-- Không được liệt kê
+
+-- Suy nghĩ về yêu cầu b ở trên: Nếu học sinh chưa có kết quả thi của môn nào cả thì liệu có liệt kê được học sinh đó không?
+-- Không được liệt kê
+
+-- Suy nghĩ về yêu cầu c ở trên: Nếu giáo viên chưa phụ trách một môn nào cả thì liệu có liệt kê được giáo viên đó không?
+-- Không được liệt kê
